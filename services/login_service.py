@@ -29,12 +29,15 @@ class LoginService:
             return {'success': False, 'message': 'Invalid session ID'}
 
     def register_user(self, register_data):
+        first_name = register_data.first_name
+        last_name = register_data.last_name
         email = register_data.email
         password = register_data.password
+        address = register_data.address
         hashed_password = self.password_hasher.hash_password(password)
 
         if self.login_dao.find_by_email(email) is not None:
             return {'success': False, 'message': 'Email already registered'}
 
-        self.login_dao.save(email, hashed_password)
+        self.login_dao.save(first_name, last_name, email, hashed_password, address)
         return {'success': True, 'message': 'Registration successful'}

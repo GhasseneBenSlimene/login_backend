@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 
 try:
-    client = MongoClient('mongodb://localhost:27017/')
+    client = MongoClient('mongodb://172.16.238.3:27017/')
     db = client['mydatabase']
     print('MongoDB connected successfully!')
 except Exception as e:

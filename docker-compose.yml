@@ -1,10 +1,6 @@
-# Define the version of Docker Compose to use
 version: '3'
 
-# Define the services that make up the application
 services:
-
-  # Service for authenticating users
   authenticate:
     build: .
     ports:
@@ -16,7 +12,6 @@ services:
       my-network:
         ipv4_address: 172.16.238.2
 
-  # Service for running a MongoDB database
   mongo:
     image: mongo:latest
     ports:
@@ -27,7 +22,6 @@ services:
       my-network:
         ipv4_address: 172.16.238.3
 
-  # Service for running a Redis cache
   redis:
     image: redis:latest
     ports:
@@ -36,7 +30,6 @@ services:
       my-network:
         ipv4_address: 172.16.238.4
 
-# Define the network that the services will use
 networks:
   my-network:
     ipam:

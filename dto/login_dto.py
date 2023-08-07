@@ -23,6 +23,17 @@ class LoginDTO:
             "role": "user"
         }
     
+    def get_session_data(self):
+        import uuid
+        return {
+            "_id": uuid.uuid4().hex,
+            "name": self.name,
+            "email": self.email,
+            "address": self.address,
+            "isVerified": False,
+            "role": "user"
+        }
+    
     @staticmethod
     def from_user(user):
         data = {

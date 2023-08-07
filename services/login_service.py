@@ -38,4 +38,4 @@ class LoginService:
             return {"msg": "Email address already in use"}
 
         self.login_dao.save(signup_data)
-        return {'success': True, 'message': 'Registration successful'}
+        return self.session_manager.startSession(signup_data)

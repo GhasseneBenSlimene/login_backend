@@ -12,9 +12,9 @@ def login():
 def logout():
     return login_controller.logout()
 
-@app.route('/user/register', methods=['POST'])
+@app.route('/user/signup', methods=['POST'])
 def register():
-    return login_controller.register()
+    return login_controller.signup()
 
 @app.route('/test', methods=['GET'])
 def test():

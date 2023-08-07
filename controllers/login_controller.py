@@ -17,7 +17,7 @@ class LoginController:
         response = self.login_service.logout(session_id)
         return jsonify(response)
 
-    def register(self):
-        register_data = LoginDTO(request.json)
-        response = self.login_service.register_user(register_data)
+    def signup(self):
+        signup_data = LoginDTO(request.json).get_signup_data()
+        response = self.login_service.signup_user(signup_data)
         return jsonify(response)

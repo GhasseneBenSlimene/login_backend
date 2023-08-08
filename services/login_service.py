@@ -39,3 +39,19 @@ class LoginService:
 
         self.login_dao.save(signup_data)
         return self.session_manager.startSession(session_data)
+
+    def send_confirmation_code(self, email):
+        try:
+            self.session_manager.send_confirmation_code([email])
+            return {
+                "msg": "check your email!",
+                "logged_in": False
+            }
+        except Exception as ex:
+            print(ex)
+            return {
+                "msg": "cannot send message",
+                "errorMsg": "exception"
+            }
+        
+    # add a method that returns the user session

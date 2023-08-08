@@ -22,3 +22,11 @@ class LoginController:
         session_data = LoginDTO(request.json).get_session_data()
         response = self.login_service.signup_user(signup_data,session_data)
         return jsonify(response)
+
+    def sendConfirmationCode(self):
+        email = request.json.get('email')
+        if not email:
+            return jsonify({'error': 'Email is required'}), 400
+
+        response = self.login_service.send_confirmation_code(email)
+        return jsonify(response)

@@ -12,6 +12,10 @@ def login():
 def logout():
     return login_controller.logout()
 
+@app.route("/user/sendConfirmationCode", methods=['POST'])
+def sendConfirmationCode():
+    return login_controller.sendConfirmationCode()
+
 @app.route('/user/signup', methods=['POST'])
 def register():
     return login_controller.signup()

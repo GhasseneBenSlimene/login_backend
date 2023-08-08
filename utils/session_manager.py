@@ -3,12 +3,14 @@ from flask_jwt_extended import create_access_token, create_refresh_token
 from flask_session import Session
 from utils.config import ApplicationConfig
 from flask_jwt_extended import JWTManager
+from utils.mail_sender import MailSender
 
 class SessionManager:
     def __init__(self, app):
         app.config.from_object(ApplicationConfig)
         Session(app)
         JWTManager(app)
+        self.mail_sender=MailSender(app)
 
     # def create_session(self, user_id):
     #     session['user_id'] = user_id
@@ -39,20 +41,27 @@ class SessionManager:
             "logged_in": True
         }
 
-    # def startUnverifiedSession(self, user):
-    #     session['user'] = user
-    #     session['logged_in'] = False
-    #     msg = Message("Action Required: Confirm your email", sender="noreply@demo.com",
-    #                     recipients=[user['email']])
-    #     session['verificationCode'] = str(randint(100000, 999999))
-    #     msg.body = "We created an account for you. Please confirm your email address." + \
-    #         "\nVerification Code : "+session['verificationCode']
-    #     mail.send(msg)
-    #     return jsonify({
-    #         "msg": "check your email!",
-    #         "current_user": user,
-    #         "logged_in": False
-    #     }), 200
+    def startUnverifiedSession(self, session_data):
+        session['user'] = session_data
+        session['logged_in'] = False
+        self.send_confirmation_code([session_data['email']])
+        return {
+            "msg": "check your email!",
+            "current_user": session_data,
+            "logged_in": False
+        }
+    
+    def send_confirmation_code(self, emails):
+        from random import randint
+        session['verificationCode'] = str(randint(100000, 999999))
+        sender = "noreply@demo.com"
+        recipients = emails
+        self.mail_sender.set_params(sender, recipients)
+
+        subject = "Action Required: Confirm your email"
+        body = "We created an account for you. Please confirm your email address." + \
+            "\nVerification Code : " + session['verificationCode']
+        self.mail_sender.send(subject, body)
 
 
     # def destroy_session(self, session_id):

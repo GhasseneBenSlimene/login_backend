@@ -2,11 +2,13 @@ from flask import session
 from flask_jwt_extended import create_access_token, create_refresh_token
 from flask_session import Session
 from utils.config import ApplicationConfig
+from flask_jwt_extended import JWTManager
 
 class SessionManager:
     def __init__(self, app):
         app.config.from_object(ApplicationConfig)
         Session(app)
+        JWTManager(app)
 
     # def create_session(self, user_id):
     #     session['user_id'] = user_id
@@ -15,11 +17,11 @@ class SessionManager:
     def startSession(self, session_data):
         try:
             if session_data['isVerified']:
-                self.startVerifiedSession(session_data)
+                return self.startVerifiedSession(session_data)
             else:
-                self.startUnverifiedSession(session_data)
+                return self.startUnverifiedSession(session_data)
         except Exception as ex:
-            print(ex)
+            print("exception: "+str(ex))
             return {
                 "msg": "cannot start session",
                 "errorMsg": "exception"
@@ -31,9 +33,9 @@ class SessionManager:
         access_token = create_access_token(identity=session_data)
         refresh_token = create_refresh_token(identity=session_data)
         return {
-            "access_token": access_token,
-            "refresh_token": refresh_token,
-            "current_user": session_data,
+            "access_token": access_token,\
+            "refresh_token": refresh_token,\
+            "current_user": session_data,\
             "logged_in": True
         }
 
@@ -53,9 +55,9 @@ class SessionManager:
     #     }), 200
 
 
-    def destroy_session(self, session_id):
-        if session.sid == session_id:
-            session.pop('user_id', None)
-            return True
-        else:
-            return False
+    # def destroy_session(self, session_id):
+    #     if session.sid == session_id:
+    #         session.pop('user_id', None)
+    #         return True
+    #     else:
+    #         return False

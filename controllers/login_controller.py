@@ -19,5 +19,6 @@ class LoginController:
 
     def signup(self):
         signup_data = LoginDTO(request.json).get_signup_data()
-        response = self.login_service.signup_user(signup_data)
+        session_data = LoginDTO(request.json).get_session_data()
+        response = self.login_service.signup_user(signup_data,session_data)
         return jsonify(response)

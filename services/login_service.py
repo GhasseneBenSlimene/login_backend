@@ -28,7 +28,7 @@ class LoginService:
         else:
             return {'success': False, 'message': 'Invalid session ID'}
 
-    def signup_user(self, signup_data):
+    def signup_user(self, signup_data, session_data):
         email = signup_data["email"]
         password = signup_data["password"]
         hashed_password = self.password_hasher.hash_password(password)
@@ -38,4 +38,4 @@ class LoginService:
             return {"msg": "Email address already in use"}
 
         self.login_dao.save(signup_data)
-        return self.session_manager.startSession(signup_data)
+        return self.session_manager.startSession(session_data)

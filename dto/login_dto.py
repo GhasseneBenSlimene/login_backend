@@ -5,7 +5,7 @@ class LoginDTO:
             self.email = data.get('email')
             self.password = data.get('password')
             self.address = data.get('address')
-        elif "name" in data:
+        else:
             self.name = data.get('name')
             self.email = data.get('email')
             self.password = data.get('password')

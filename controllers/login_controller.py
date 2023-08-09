@@ -7,7 +7,7 @@ class LoginController:
         self.login_service = LoginService(app)
 
     def login(self):
-        login_data = LoginDTO(request.json)
+        login_data = LoginDTO(request.json).get_signin_data()
         response = self.login_service.authenticate(login_data)
         return jsonify(response)
 

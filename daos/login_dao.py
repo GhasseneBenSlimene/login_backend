@@ -1,4 +1,5 @@
 from daos import db
+from dto.login_dto import LoginDTO
 from models.user import User
 
 class LoginDAO:
@@ -18,3 +19,11 @@ class LoginDAO:
         self.users.insert_one(signup_data)
         return User(signup_data["name"], signup_data["email"], \
                     signup_data["password"], signup_data["address"], signup_data["_id"])
+    
+    def find_session_by_email(self, email):
+        user_doc = self.find_by_email(email)
+        if user_doc is None:
+            return None
+        user_data = LoginDTO.from_user(user_doc)
+        session_data = user_data.get_session_data()
+        return session_data

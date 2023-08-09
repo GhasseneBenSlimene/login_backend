@@ -22,4 +22,4 @@ class User:
         }
 
     def __repr__(self):
-        return f'<User {self.first_name} {self.last_name} ({self.email})>'
+        return f'<User {self.id} {self.name} ({self.email})>'

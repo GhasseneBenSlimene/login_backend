@@ -1,9 +1,15 @@
 class LoginDTO:
     def __init__(self, data):
-        self.name = data.get('firstName')+" "+data.get('lastName')
-        self.email = data.get('email')
-        self.password = data.get('password')
-        self.address = data.get('address')
+        if "firstName" in data and "firstName" in data:
+            self.name = data.get('firstName')+" "+data.get('lastName')
+            self.email = data.get('email')
+            self.password = data.get('password')
+            self.address = data.get('address')
+        elif "name" in data:
+            self.name = data.get('name')
+            self.email = data.get('email')
+            self.password = data.get('password')
+            self.address = data.get('address')
 
     def get_signin_data(self):
         return {

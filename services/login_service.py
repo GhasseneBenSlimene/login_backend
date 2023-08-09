@@ -1,4 +1,5 @@
 from daos.login_dao import LoginDAO
+from dto.login_dto import LoginDTO
 from utils.password_hasher import PasswordHasher
 from utils.session_manager import SessionManager
 
@@ -42,16 +43,26 @@ class LoginService:
 
     def send_confirmation_code(self, email):
         try:
+            user = self.login_dao.find_by_email(email)
+            if user is None:
+                raise ValueError("Email not found in database")
+            user_data = LoginDTO.from_user(user)
+            session_data = user_data.get_session_data()
             self.session_manager.send_confirmation_code([email])
             return {
                 "msg": "check your email!",
+                "current_user": session_data,
                 "logged_in": False
             }
+        except ValueError as ex:
+            print("Exception: "+ str(ex))
+            return {
+                "msg": "cannot send message",
+                "errorMsg": str(ex)
+            }
         except Exception as ex:
-            print(ex)
+            print("Exception: "+ str(ex))
             return {
                 "msg": "cannot send message",
                 "errorMsg": "exception"
             }
-        
-    # add a method that returns the user session

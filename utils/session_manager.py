@@ -44,23 +44,23 @@ class SessionManager:
     def startUnverifiedSession(self, session_data):
         session['user'] = session_data
         session['logged_in'] = False
-        self.send_confirmation_code([session_data['email']])
+        subject = "Action Required: Confirm your email"
+        body = "We created an account for you. Please confirm your email address."
+        self.send_code([session_data['email']], subject, body)
         return {
             "msg": "check your email!",
             "current_user": session_data,
             "logged_in": False
         }
     
-    def send_confirmation_code(self, emails):
+    def send_code(self, emails, subject, body):
         from random import randint
         session['verificationCode'] = str(randint(100000, 999999))
         sender = "noreply@demo.com"
         recipients = emails
         self.mail_sender.set_params(sender, recipients)
 
-        subject = "Action Required: Confirm your email"
-        body = "We created an account for you. Please confirm your email address." + \
-            "\nVerification Code : " + session['verificationCode']
+        body += "\nVerification Code : " + session['verificationCode']
         self.mail_sender.send(subject, body)
 
 

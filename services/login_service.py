@@ -64,7 +64,9 @@ class LoginService:
             session_data = self.login_dao.find_session_by_email(email)
             if session_data is None:
                 raise ValueError("Email not found in database")
-            self.session_manager.send_confirmation_code([email])
+            subject = "Action Required: Confirm your email"
+            body = "We created an account for you. Please confirm your email address."
+            self.session_manager.send_code([email], subject, body)
             return {
                 "msg": "check your email!",
                 "current_user": session_data,

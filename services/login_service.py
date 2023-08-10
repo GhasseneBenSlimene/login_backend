@@ -59,6 +59,8 @@ class LoginService:
 
     def send_confirmation_code(self, email):
         try:
+            if not email:
+                return{'error': 'Email is required'}
             session_data = self.login_dao.find_session_by_email(email)
             if session_data is None:
                 raise ValueError("Email not found in database")
@@ -106,3 +108,7 @@ class LoginService:
                 "msg": "cannot verify",
                 "errorMsg": "exception"
             }
+        
+    def getSessionInfo(self):
+        sessionInfo = self.session_manager.get_Session_Info()
+        return sessionInfo

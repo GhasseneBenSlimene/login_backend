@@ -28,13 +28,15 @@ class LoginController:
 
     def sendConfirmationCode(self):
         email = request.json.get('email')
-        if not email:
-            return jsonify({'error': 'Email is required'})
-
         response = self.login_service.send_confirmation_code(email)
         return jsonify(response)
     
     def verifyEmail(self):
         resquestCode = int(request.json.get('verificationCode'))
         response = self.login_service.verify_email(resquestCode)
+        return jsonify(response)
+    
+    
+    def getSessionInfo(self):
+        response = self.login_service.getSessionInfo()
         return jsonify(response)

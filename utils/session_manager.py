@@ -14,7 +14,6 @@ class SessionManager:
 
 
     def startSession(self, session_data):
-        print(session_data)
         try:
             if session_data['isVerified']:
                 return self.startVerifiedSession(session_data)
@@ -65,6 +64,15 @@ class SessionManager:
         self.mail_sender.send(subject, body)
 
 
+    def verify_confirmation_code(self, resquestCode):
+        session_data = session['user']
+        verificationCode = int(session['verificationCode'])
+        if resquestCode == verificationCode:
+            return session_data
+        else:
+            return None
+
+
     def destroy_session(self, session_cookie):
         try:
             session_id = session_cookie.split('.')[0]
@@ -84,11 +92,21 @@ class SessionManager:
                 "errorMsg": "exception"
             }
     
-
-    def verify_confirmation_code(self, resquestCode):
-        session_data = session['user']
-        verificationCode = int(session['verificationCode'])
-        if resquestCode == verificationCode:
-            return session_data
-        else:
-            return None
+    def get_Session_Info(self):
+        try:
+            if 'user' in session:
+                return {
+                    "logged_in": session.get('logged_in'),
+                    "current_user": session['user']
+                }
+            else:
+                return {
+                    "msg": "empty session"
+                }
+            
+        except Exception as ex:
+            print(ex)
+            return {
+                "msg": "cannot get session info",
+                "errorMsg": "exception"
+            }

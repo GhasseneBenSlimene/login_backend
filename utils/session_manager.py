@@ -12,9 +12,6 @@ class SessionManager:
         JWTManager(app)
         self.mail_sender=MailSender(app)
 
-    # def create_session(self, user_id):
-    #     session['user_id'] = user_id
-    #     return session.sid
 
     def startSession(self, session_data):
         try:
@@ -28,6 +25,7 @@ class SessionManager:
                 "msg": "cannot start session",
                 "errorMsg": "exception"
             }
+        
 
     def startVerifiedSession(self, session_data):
         session['user'] = session_data
@@ -40,6 +38,7 @@ class SessionManager:
             "current_user": session_data,\
             "logged_in": True
         }
+    
 
     def startUnverifiedSession(self, session_data):
         session['user'] = session_data
@@ -64,9 +63,20 @@ class SessionManager:
         self.mail_sender.send(subject, body)
 
 
-    # def destroy_session(self, session_id):
-    #     if session.sid == session_id:
-    #         session.pop('user_id', None)
-    #         return True
-    #     else:
-    #         return False
+    def destroy_session(self, session_cookie):
+        try:
+            session_id = session_cookie.split('.')[0]
+            if session.sid == session_id:
+                session.pop("logged_in")
+                session.pop("user")
+                return {
+                    "msg": "user logged out"
+                }
+            else:
+                raise Exception()
+        except Exception as ex:
+            print("Exception: "+str(ex))
+            return {
+                "msg": "cannot signout",
+                "errorMsg": "exception"
+            }

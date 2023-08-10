@@ -8,9 +8,9 @@ login_controller = LoginController(app)
 def login():
     return login_controller.login()
 
-@app.route('/user/logout', methods=['POST'])
+@app.route('/user/signout', methods=['GET'])
 def logout():
-    return login_controller.logout()
+    return login_controller.signout()
 
 @app.route("/user/sendConfirmationCode", methods=['POST'])
 def sendConfirmationCode():

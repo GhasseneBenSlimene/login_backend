@@ -8,6 +8,7 @@ class LoginService:
         self.password_hasher = PasswordHasher()
         self.session_manager = SessionManager(app)
 
+
     def authenticate(self, login_data):
         try:
             email = login_data["email"]
@@ -26,8 +27,8 @@ class LoginService:
             
             session_data = self.login_dao.find_session_by_email(email)
             
-            session = self.session_manager.startSession(session_data)
-            return session
+            new_session = self.session_manager.startSession(session_data)
+            return new_session
     
         except Exception as ex:
             print(ex)
@@ -35,12 +36,11 @@ class LoginService:
                 "msg": "cannot login",
                 "errorMsg": "exception"
             }
+        
 
-    def logout(self, session_id):
-        if self.session_manager.destroy_session(session_id):
-            return {'success': True, 'message': 'Logout successful'}
-        else:
-            return {'success': False, 'message': 'Invalid session ID'}
+    def signout(self, session_cookie):
+        return self.session_manager.destroy_session(session_cookie)
+    
 
     def signup_user(self, signup_data, session_data):
         email = signup_data["email"]
@@ -53,8 +53,9 @@ class LoginService:
 
         self.login_dao.save(signup_data)
 
-        session = self.session_manager.startSession(session_data)
-        return session
+        new_session = self.session_manager.startSession(session_data)
+        return new_session
+    
 
     def send_confirmation_code(self, email):
         try:

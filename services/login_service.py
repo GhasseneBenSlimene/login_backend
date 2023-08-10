@@ -80,3 +80,29 @@ class LoginService:
                 "msg": "cannot send message",
                 "errorMsg": "exception"
             }
+    
+    
+    def verify_email(self, resquestCode):
+        try:
+            session_data = self.session_manager.verify_confirmation_code(resquestCode)
+            if session_data is not None:
+                email = session_data['email']
+                update_data = {"isVerified": True}
+                if (self.login_dao.update(email,update_data)):
+                    session_data["isVerified"]=True
+                    new_session = self.session_manager.startSession(session_data)
+                    return new_session
+                else:
+                    {
+                        "msg": "verification failed"
+                    }
+            else:
+                return {
+                "msg": "not equal"
+                }
+        except Exception as ex:
+            print(ex)
+            return {
+                "msg": "cannot verify",
+                "errorMsg": "exception"
+            }

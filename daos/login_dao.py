@@ -27,3 +27,14 @@ class LoginDAO:
         user_data = LoginDTO.from_user(user_doc)
         session_data = user_data.get_session_data()
         return session_data
+    
+    def update(self, email, update_data):
+        user_doc = self.users.find_one({'email': email})
+        if user_doc is None:
+            return None
+        self.users.update_one({'email': email}, {'$set': update_data})
+        updated_user_doc = self.users.find_one({'email': email})
+        user_id = str(updated_user_doc['_id'])
+        return User(updated_user_doc['name'], updated_user_doc['email'], \
+                    updated_user_doc['password'], updated_user_doc['address'], \
+                    user_id, updated_user_doc['isVerified'], updated_user_doc['role'])

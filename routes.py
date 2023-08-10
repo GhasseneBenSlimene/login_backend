@@ -12,13 +12,17 @@ def login():
 def logout():
     return login_controller.signout()
 
+@app.route('/user/signup', methods=['POST'])
+def register():
+    return login_controller.signup()
+
 @app.route("/user/sendConfirmationCode", methods=['POST'])
 def sendConfirmationCode():
     return login_controller.sendConfirmationCode()
 
-@app.route('/user/signup', methods=['POST'])
-def register():
-    return login_controller.signup()
+@app.route('/user/verifyEmail', methods=['POST'])
+def verifyEmail():
+    return login_controller.verifyEmail()
 
 @app.route('/test', methods=['GET'])
 def test():

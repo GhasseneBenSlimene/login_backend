@@ -14,6 +14,7 @@ class SessionManager:
 
 
     def startSession(self, session_data):
+        print(session_data)
         try:
             if session_data['isVerified']:
                 return self.startVerifiedSession(session_data)
@@ -67,8 +68,10 @@ class SessionManager:
         try:
             session_id = session_cookie.split('.')[0]
             if session.sid == session_id:
+                print(session)
                 session.pop("logged_in")
                 session.pop("user")
+                print(session)
                 return {
                     "msg": "user logged out"
                 }
@@ -80,3 +83,14 @@ class SessionManager:
                 "msg": "cannot signout",
                 "errorMsg": "exception"
             }
+    
+
+    def verify_confirmation_code(self, resquestCode):
+        session_data = session['user']
+        print(resquestCode)
+        verificationCode = int(session['verificationCode'])
+        print(verificationCode)
+        if resquestCode == verificationCode:
+            return session_data
+        else:
+            return None

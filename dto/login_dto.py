@@ -1,15 +1,20 @@
 class LoginDTO:
     def __init__(self, data):
         if "firstName" in data and "firstName" in data:
-            self.name = data.get('firstName')+" "+data.get('lastName')
+            self.name = data.get('firstName') + " " + data.get('lastName')
             self.email = data.get('email')
             self.password = data.get('password')
             self.address = data.get('address')
+            self.isVerified = data.get('isVerified', False)
+            self.role = data.get('role', 'user')
         else:
             self.name = data.get('name')
             self.email = data.get('email')
             self.password = data.get('password')
             self.address = data.get('address')
+            self.isVerified = data.get('isVerified', False)
+            self.role = data.get('role', 'user')
+        
 
     def get_signin_data(self):
         return {
@@ -25,8 +30,8 @@ class LoginDTO:
             "email": self.email,
             "password": self.password,
             "address": self.address,
-            "isVerified": False,
-            "role": "user"
+            "isVerified": self.isVerified,
+            "role": self.role
         }
     
     def get_session_data(self):
@@ -36,16 +41,19 @@ class LoginDTO:
             "name": self.name,
             "email": self.email,
             "address": self.address,
-            "isVerified": False,
-            "role": "user"
+            "isVerified": self.isVerified,
+            "role": self.role
         }
     
     @staticmethod
     def from_user(user):
         data = {
+            "id": user.id,
             "name": user.name,
             "email": user.email,
             "password": user.password,
-            "address": user.address
+            "address": user.address,
+            "isVerified": user.isVerified,
+            "role": user.role
         }
         return LoginDTO(data)

@@ -31,12 +31,30 @@ class LoginController:
         response = self.login_service.send_confirmation_code(email)
         return jsonify(response)
     
+
     def verifyEmail(self):
-        resquestCode = int(request.json.get('verificationCode'))
-        response = self.login_service.verify_email(resquestCode)
+        requestCode = int(request.json.get('verificationCode'))
+        response = self.login_service.verify_email(requestCode)
         return jsonify(response)
     
     
     def getSessionInfo(self):
-        response = self.login_service.getSessionInfo()
+        response = self.login_service.get_session_info()
+        return jsonify(response)
+    
+
+    def resetPasswordStep1(self):
+        email = request.json.get("email")
+        response = self.login_service.reset_password_step1(email)
+        return jsonify(response)
+    
+    def resetPasswordStep2(self):
+        requestCode = int(request.json.get('verificationCode'))
+        response = self.login_service.reset_password_step2(requestCode)
+        return jsonify(response)
+    
+    def resetPasswordStep3(self):
+        password = request.json.get("password")
+        session_cookie = request.cookies.get('session')
+        response = self.login_service.reset_password_step3(password, session_cookie)
         return jsonify(response)

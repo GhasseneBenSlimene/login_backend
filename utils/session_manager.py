@@ -53,6 +53,13 @@ class SessionManager:
             "logged_in": False
         }
     
+
+    def start_reset_password_session(self, email, verified=False):
+        session["user"] = {
+            "email": email, "code_verified": verified
+        }
+
+    
     def send_code(self, emails, subject, body):
         from random import randint
         session['verificationCode'] = str(randint(100000, 999999))
@@ -64,20 +71,24 @@ class SessionManager:
         self.mail_sender.send(subject, body)
 
 
-    def verify_confirmation_code(self, resquestCode):
+    def verify_confirmation_code(self, requestCode):
         session_data = session['user']
         verificationCode = int(session['verificationCode'])
-        if resquestCode == verificationCode:
+        if requestCode == verificationCode:
             return session_data
         else:
             return None
 
 
+    def verify_session(self, session_cookie):
+        session_id = session_cookie.split('.')[0]
+        return session.sid == session_id
+
+
     def destroy_session(self, session_cookie):
         try:
-            session_id = session_cookie.split('.')[0]
-            if session.sid == session_id:
-                session.pop("logged_in")
+            if self.verify_session(session_cookie):
+                session.pop("logged_in", None)
                 session.pop("user")
                 session.pop('verificationCode', None)
                 return {
@@ -92,7 +103,7 @@ class SessionManager:
                 "errorMsg": "exception"
             }
     
-    def get_Session_Info(self):
+    def get_session_info(self):
         try:
             if 'user' in session:
                 return {

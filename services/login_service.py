@@ -86,9 +86,9 @@ class LoginService:
             }
     
     
-    def verify_email(self, resquestCode):
+    def verify_email(self, requestCode):
         try:
-            session_data = self.session_manager.verify_confirmation_code(resquestCode)
+            session_data = self.session_manager.verify_confirmation_code(requestCode)
             if session_data is not None:
                 email = session_data['email']
                 update_data = {"isVerified": True}
@@ -111,6 +111,51 @@ class LoginService:
                 "errorMsg": "exception"
             }
         
-    def getSessionInfo(self):
-        sessionInfo = self.session_manager.get_Session_Info()
+    def get_session_info(self):
+        sessionInfo = self.session_manager.get_session_info()
         return sessionInfo
+    
+    def reset_password_step1(self, email):
+        try:
+            if self.login_dao.find_by_email(email) is not None:
+                subject = "Password Reset"
+                body = "We received a request to change your password."
+                self.session_manager.start_reset_password_session(email)
+                self.session_manager.send_code([email],subject=subject,body=body)
+                return {"msg": "check your email for confirmation code"}
+            else:
+                return {"msg": "there is no account with this email"}
+        except Exception as ex:
+            print("Exception: ",str(ex))
+            return {"msg": "cannot reset password", "errorMsg": "exception"}
+        
+    def reset_password_step2(self, requestCode):
+        try:
+            session_data = self.session_manager.verify_confirmation_code(requestCode)
+            if session_data is not None:
+                email=session_data["email"]
+                self.session_manager.start_reset_password_session(email,True)
+                return {"msg": "code verified"}
+            else: 
+                return {"msg": "code not matched"}
+        except Exception as ex:
+            print("Exception: ",str(ex))
+            return {"msg": "cannot reset password", "errorMsg": "exception"}
+    
+    def reset_password_step3(self, password, session_cookie):
+        try:
+            session_data = self.get_session_info()["current_user"]
+            email = session_data['email']
+            hashed_password = self.password_hasher.hash_password(password)
+            update_data = {"password": hashed_password}
+            session_is_verified = self.session_manager.verify_session(session_cookie)
+            
+            if session_data["code_verified"] and session_is_verified:
+                self.login_dao.update(email,update_data)
+                self.signout(session_cookie)
+                return {"msg": "password changed successfully"}
+            else:
+                return {"msg": "Code not verified, Try Later"}
+            
+        except Exception as ex:
+            return {"msg": "Internal error, Try Later", "errorMsg": "exception"} 

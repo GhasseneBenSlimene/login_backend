@@ -32,5 +32,17 @@ def verifyEmail():
 def getSessionInfo():
     return login_controller.getSessionInfo()
 
+@app.route('/resetPasswordStep1', methods=['POST'])
+def resetPasswordStep1():
+    return login_controller.resetPasswordStep1()
+
+@app.route('/resetPasswordStep2', methods=['POST'])
+def resetPasswordStep2():
+    return login_controller.resetPasswordStep2()
+
+@app.route('/resetPasswordStep3', methods=['POST'])
+def resetPasswordStep3():
+    return login_controller.resetPasswordStep3()
+
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0', port=5000)

@@ -12,13 +12,13 @@ class ApplicationConfig:
     SESSION_TYPE = "redis"
     SESSION_PERMANENT = False
     SESSION_USE_SIGNER = True
-    # SESSION_REDIS = redis.from_url("redis://172.16.238.4:6379")
-    SESSION_REDIS = redis.from_url("redis://127.0.0.1:6379")
+    SESSION_REDIS = redis.from_url("redis://172.16.238.4:6379")
+    # SESSION_REDIS = redis.from_url("redis://127.0.0.1:6379")
 
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 587
-    MAIL_USERNAME =os.environ.get("EMAIL_ADDRESS")
-    MAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")
+    MAIL_USERNAME ='eyachaari@ieee.org'
+    MAIL_PASSWORD ='eya12345'
     MAIL_USE_TLS = True
     MAIL_USE_SSL = False
 

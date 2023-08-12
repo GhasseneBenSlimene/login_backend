@@ -1,8 +1,14 @@
+# This file contains the required Python packages and their versions for the login_backend Flask application.
+# The packages include Flask, Flask-Session, redis, python-dotenv, bcrypt, pymongo, flask_jwt_extended, and flask_mail.
+# Flask is a micro web framework for building web applications, Flask-Session is an extension for managing user sessions,
+# redis is an in-memory data structure store, python-dotenv is a module for loading environment variables from a .env file,
+# bcrypt is a password-hashing library, pymongo is a Python driver for MongoDB, flask_jwt_extended is an extension for JSON Web Tokens,
+# and flask_mail is an extension for sending email messages from a Flask application.
 Flask==2.0.1
 Flask-Session==0.4.0
 redis==3.5.3
 python-dotenv==0.19.1
 bcrypt==3.2.0
 pymongo==3.12.0
-flask_jwt_extended
-flask_mail
+flask_jwt_extended==4.2.3
+flask_mail==0.9.1

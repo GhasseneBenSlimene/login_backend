@@ -11,11 +11,8 @@ To run the application, you can execute the following command:
 
 python routes.py
 
-This will start the Flask development server, which you can access by navigating to http://localhost:5000 in your web browser.
+Alternatively, you can use Docker Compose to start the app. To do this, make sure you have Docker and Docker Compose installed on your system, then run the following command:
 
-The application provides the following routes:
+docker compose up
 
-/user/login: A POST route that handles user authentication.
-/user/logout: A POST route that handles user logout.
-/user/register: A POST route that handles user registration.
-/test: A GET route that returns a simple string indicating that the route is a test route.
+This will start the Flask development server inside a Docker container, which you can access by navigating to http://localhost:5000 in your web browser.

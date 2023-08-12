@@ -2,37 +2,52 @@ version: '3'
 
 services:
   authenticate:
-    build: .
+    # Name of the service
+    build: . # Build the Docker image from the Dockerfile in the current directory
     ports:
-      - "5000:5000"
+      # Expose the container's port to the host machine
+      - "5000:5000" # Map port 5000 on the host to port 5000 in the container
     depends_on:
-      - mongo
-      - redis
+      # Specify the services that this service depends on
+      - mongo # This service depends on the mongo service
+      - redis # This service depends on the redis service
     networks:
+      # Specify the network settings for this service
       my-network:
-        ipv4_address: 172.16.238.2
+        # Use the my-network network
+        ipv4_address: 172.16.238.2 # Assign the container the IP address 172.16.238.2
 
   mongo:
-    image: mongo:latest
+    # Name of the service
+    image: mongo:latest # Use the latest version of the mongo image from Docker Hub
     ports:
-      - "27017:27017"
+      # Expose the container's port to the host machine
+      - "27017:27017" # Map port 27017 on the host to port 27017 in the container
     volumes:
-      - ./data:/data/db
+      # Mount a volume from the host machine to the container
+      - ./data:/data/db # Map the ./data directory on the host to the /data/db directory in the container
     networks:
+      # Specify the network settings for this service
       my-network:
-        ipv4_address: 172.16.238.3
+        # Use the my-network network
+        ipv4_address: 172.16.238.3 # Assign the container the IP address 172.16.238.3
 
   redis:
-    image: redis:latest
+    # Name of the service
+    image: redis:latest # Use the latest version of the redis image from Docker Hub
     ports:
-      - "6379:6379"
+      # Expose the container's port to the host machine
+      - "6379:6379" # Map port 6379 on the host to port 6379 in the container
     networks:
+      # Specify the network settings for this service
       my-network:
-        ipv4_address: 172.16.238.4
+        # Use the my-network network
+        ipv4_address: 172.16.238.4 # Assign the container the IP address 172.16.238.4
 
 networks:
+  # Define the network settings for the my-network network
   my-network:
     ipam:
       driver: default
       config:
-        - subnet: 172.16.238.0/24
+        - subnet: 172.16.238.0/24 # Define the subnet for the network

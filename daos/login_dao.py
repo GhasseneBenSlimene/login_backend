@@ -12,13 +12,13 @@ class LoginDAO:
             return None
         user_id = str(user_doc['_id'])
         return User( user_doc['name'], user_doc['email'], \
-                     user_doc['password'], user_doc['address'], \
+                     user_doc['password'], user_doc['address'],user_doc["address"], \
                      user_id ,user_doc['isVerified'], user_doc['role'])
 
     def save(self, signup_data):
         self.users.insert_one(signup_data)
         return User(signup_data["name"], signup_data["email"], \
-                    signup_data["password"], signup_data["address"], signup_data["_id"])
+                    signup_data["password"], signup_data["address"],signup_data["phone"], signup_data["_id"])
     
     def find_session_by_email(self, email):
         user_doc = self.find_by_email(email)
@@ -36,5 +36,5 @@ class LoginDAO:
         updated_user_doc = self.users.find_one({'email': email})
         user_id = str(updated_user_doc['_id'])
         return User(updated_user_doc['name'], updated_user_doc['email'], \
-                    updated_user_doc['password'], updated_user_doc['address'], \
+                    updated_user_doc['password'], updated_user_doc['address'],updated_user_doc["phone"], \
                     user_id, updated_user_doc['isVerified'], updated_user_doc['role'])

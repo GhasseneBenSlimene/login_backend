@@ -1,8 +1,20 @@
+from functools import wraps
 from controllers.login_controller import LoginController
 from flask import Flask
 
 app = Flask(__name__)
 login_controller = LoginController(app)
+
+def loginRequired(f):
+    @wraps(f)
+    def decorated_function():
+        return login_controller.decorated_function(f)
+    return decorated_function
+
+@app.route('/protected', methods=['GET'])
+@loginRequired
+def protected():
+    return 'This is a protected route!'
 
 @app.route('/test', methods=['GET'])
 def test():

@@ -5,15 +5,17 @@ class LoginDTO:
             self.email = data.get('email')
             self.password = data.get('password')
             self.address = data.get('address')
+            self.phone = data.get('phone')
             self.isVerified = data.get('isVerified', False)
-            self.role = data.get('role', 'user')
+            self.role = data.get('role', 'admin')
         else:
             self.name = data.get('name')
             self.email = data.get('email')
             self.password = data.get('password')
             self.address = data.get('address')
+            self.phone = data.get('phone')
             self.isVerified = data.get('isVerified', False)
-            self.role = data.get('role', 'user')
+            self.role = data.get('role', 'admin')
         
 
     def get_signin_data(self):
@@ -30,6 +32,7 @@ class LoginDTO:
             "email": self.email,
             "password": self.password,
             "address": self.address,
+            "phone": self.phone,
             "isVerified": self.isVerified,
             "role": self.role
         }
@@ -40,6 +43,7 @@ class LoginDTO:
             "name": self.name,
             "email": self.email,
             "address": self.address,
+            "phone": self.phone,
             "isVerified": self.isVerified,
             "role": self.role
         }
@@ -52,6 +56,7 @@ class LoginDTO:
             "email": user.email,
             "password": user.password,
             "address": user.address,
+            "phone": user.phone,
             "isVerified": user.isVerified,
             "role": user.role
         }

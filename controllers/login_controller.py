@@ -6,6 +6,13 @@ class LoginController:
     def __init__(self,app):
         self.login_service = LoginService(app)
 
+    
+    def decorated_function(self, f):
+        def decorated_function(*args, **kwargs):
+            if not self.login_service.is_logged_in():
+                return jsonify(msg="You must be logged in to perform this action"), 401
+            return f(*args, **kwargs)
+        return decorated_function
 
     def login(self):
         login_data = LoginDTO(request.json).get_signin_data()

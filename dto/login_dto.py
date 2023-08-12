@@ -37,7 +37,6 @@ class LoginDTO:
     def get_session_data(self):
         import uuid
         return {
-            "_id": uuid.uuid4().hex,
             "name": self.name,
             "email": self.email,
             "address": self.address,

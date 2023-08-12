@@ -36,7 +36,6 @@ class SessionManager:
         return {
             "access_token": access_token,\
             "refresh_token": refresh_token,\
-            "current_user": session_data,\
             "logged_in": True
         }
     
@@ -49,7 +48,6 @@ class SessionManager:
         self.send_code([session_data['email']], subject, body)
         return {
             "msg": "check your email!",
-            "current_user": session_data,
             "logged_in": False
         }
     

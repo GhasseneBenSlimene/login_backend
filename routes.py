@@ -1,8 +1,15 @@
+from functools import wraps
 from controllers.login_controller import LoginController # Import the LoginController class from the login_controller module
 from flask import Flask # Import the Flask class from the flask module
 
 app = Flask(__name__) # Create a new Flask app instance
 login_controller = LoginController(app) # Create a new LoginController instance and pass in the Flask app instance
+
+def loginRequired(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        return login_controller.authenticate_function(f, *args, **kwargs)
+    return decorated_function
 
 @app.route('/test', methods=['GET']) # Define a new route for the /test endpoint
 def test():

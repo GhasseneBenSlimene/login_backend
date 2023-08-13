@@ -9,6 +9,8 @@ class LoginService:
         self.password_hasher = PasswordHasher()
         self.session_manager = SessionManager(app)
 
+    def is_logged_in(self):
+        return self.session_manager.is_logged_in()
 
     def authenticate(self, login_data):
         try:

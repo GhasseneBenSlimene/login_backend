@@ -6,6 +6,11 @@ class LoginController:
     def __init__(self,app):
         self.login_service = LoginService(app) # Create a new LoginService instance and pass in the Flask app instance
 
+    def authenticate_function(self, f, *args, **kwargs):
+        if not self.login_service.is_logged_in():
+            return jsonify(msg="You must be logged in to perform this action"), 401
+        return f(*args, **kwargs)
+
     def login(self):
         login_data = LoginDTO(request.json).get_signin_data() # Create a new LoginDTO instance and pass in the request JSON data, then get the signin data
         response = self.login_service.authenticate(login_data) # Call the authenticate method of the LoginService instance and pass in the signin data

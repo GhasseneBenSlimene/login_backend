@@ -7,8 +7,8 @@ login_controller = LoginController(app)
 
 def loginRequired(f):
     @wraps(f)
-    def decorated_function():
-        return login_controller.decorated_function(f)
+    def decorated_function(*args, **kwargs):
+        return login_controller.authenticate_function(f, *args, **kwargs)
     return decorated_function
 
 @app.route('/protected', methods=['GET'])

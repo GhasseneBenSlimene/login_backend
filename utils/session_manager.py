@@ -120,5 +120,5 @@ class SessionManager:
                 "errorMsg": "exception"
             }
 
-    def is_logged_in():
+    def is_logged_in(self):
         return session.get('logged_in', False)

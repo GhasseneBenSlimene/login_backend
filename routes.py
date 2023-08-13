@@ -5,15 +5,24 @@ from flask import Flask # Import the Flask class from the flask module
 app = Flask(__name__) # Create a new Flask app instance
 login_controller = LoginController(app) # Create a new LoginController instance and pass in the Flask app instance
 
+# Define a decorator function that requires authentication
 def loginRequired(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
+        # Call the authenticate_function method of the LoginController class to check if the user is logged in
+        # Pass in the original function and any additional arguments or keyword arguments
         return login_controller.authenticate_function(f, *args, **kwargs)
     return decorated_function
 
 @app.route('/test', methods=['GET']) # Define a new route for the /test endpoint
 def test():
     return 'This is a test route!' # Return a string when the route is accessed
+
+# Define a new route for the /protected endpoint that requires authentication
+@app.route('/protected', methods=['GET'])
+@loginRequired
+def protected():
+    return 'This is a protected route!' # Return a string when the route is accessed
 
 @app.route('/user/login', methods=['POST']) # Define a new route for the /user/login endpoint
 def login():

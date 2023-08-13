@@ -9,8 +9,9 @@ class LoginService:
         self.password_hasher = PasswordHasher()
         self.session_manager = SessionManager(app)
 
+    # Define a method for checking if the user is logged in
     def is_logged_in(self):
-        return self.session_manager.is_logged_in()
+        return self.session_manager.is_logged_in() # Call the is_logged_in method of the SessionManager class to check if the user is logged in
 
     def authenticate(self, login_data):
         try:

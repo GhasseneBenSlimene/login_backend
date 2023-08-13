@@ -112,4 +112,6 @@ class SessionManager:
             } # If an exception occurs, return an error message
         
     def is_logged_in(self):
+        # Check if the 'logged_in' key is present in the session object and has a truthy value
+        # If it does, return True, otherwise return False
         return session.get('logged_in', False)
